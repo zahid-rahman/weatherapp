@@ -89,3 +89,17 @@ code {
 .navRow {
   text-align: center;
 }
+
+@media screen and (max-width:767px) {
+  .mainImg {
+    text-align: center;
+    display: block;
+    padding:20px;
+    margin:0px auto;
+  }
+
+  .regioninput {
+    display: block;
+    margin: -59px auto 50px auto;
+  }
+}

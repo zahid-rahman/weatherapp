@@ -3,10 +3,10 @@ import React from 'react'
 const Navbar = (props) => {
     return (
         <div className="row navRow">
-            <div className="col-md-6">
-                <h1 className="title">Weather app</h1>
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <h2 className="title">Weather app</h2>
             </div>
-            <div className="col-md-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                 <form className="region" onSubmit={(event) => props.changeWeather(event)}>
                     <input 
                         className="regioninput" 
