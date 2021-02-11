@@ -4,18 +4,29 @@ import DisplayWeather from './components/DisplayWeather';
 import Navbar from './components/Navbar';
 import './index.css';
 
-
 function App() {
-  const [latitude,setLatitude] = useState(0)
-  const [longitude,setLongitude] = useState(0)
+  const [currentLocationDetails,setCurrentLocationDetails] = useState()
   const [weatherDetails,setWeatherDetails] = useState({})
   const [inputData,setInputData] = useState()
 
-  const getWeatherDetails = (one,two) => {
-    axios.get(`http://api.weatherstack.com/current?access_key=a37ec4099f761ab686c6f665c6ebc59f&query=${one},${two}
+  const getCurrentLocation = () => {
+    axios.get(`http://api.ipstack.com/check?access_key=0f7f6854fe7283ccc6c68496d7c50780
     `)
     .then(response => {
       console.log(response.data)
+      setCurrentLocationDetails(response.data.region_name)
+    })
+    .catch(error => {
+      console.error(error)
+    })
+  }
+
+  const getWeatherDetails = (regionName) => {
+    console.log(regionName)
+    axios.get(`http://api.weatherstack.com/current?access_key=a37ec4099f761ab686c6f665c6ebc59f&query=${regionName}
+    `)
+    .then(response => {
+      console.log(response)
       const weatherData = {
         location:response.data.location.name,
         temperature:response.data.current.temperature,
@@ -33,25 +44,15 @@ function App() {
     .catch(error => {
       console.error(error)
     })
-
   }
 
   useEffect(() => {
-    if(navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLatitude(position.coords.latitude)
-        setLongitude(position.coords.longitude)
-        // API call 
-        console.log(latitude,longitude)
-        getWeatherDetails(latitude,longitude)
-      })
-    }else {
-      console.log("not supported")
-    }
-  },[latitude,longitude])
+    getCurrentLocation()
+    console.log(currentLocationDetails)
+    getWeatherDetails(currentLocationDetails)
+  },[currentLocationDetails])
 
   const changeRegion = (value) => {
-    console.log(value)
     setInputData(value)
   }
 
@@ -60,7 +61,6 @@ function App() {
     axios.get(`http://api.weatherstack.com/current?access_key=a37ec4099f761ab686c6f665c6ebc59f&query=${inputData}
     `)
     .then(response => {
-      console.log(response.data)
       const weatherData = {
         location:response.data.location.name,
         temperature:response.data.current.temperature,
